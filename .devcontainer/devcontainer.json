@@ -1,0 +1,8 @@
+{
+    "name": "My Dev Container",
+    "build": {
+      "dockerfile": "../Dockerfile",
+      "context": ".."
+    },
+    "forwardPorts": [3000]
+  }
