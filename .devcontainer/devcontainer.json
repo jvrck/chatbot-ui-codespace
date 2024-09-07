@@ -4,5 +4,5 @@
       "dockerfile": "../src/Dockerfile",
       "context": "../src"
     },
-    "forwardPorts": [3000]
+    "forwardPorts": [3001]
   }

@@ -14,15 +14,46 @@ COPY ./container-setup /app/container-setup
 # Ensure that all shell scripts in the container-setup directory have executable permissions
 RUN chmod +x /app/container-setup/*.sh
 
-# Install Node.js using the script (you could consider combining the chmod and execution commands into fewer layers)
+# Install Node.js using the script
 RUN /app/container-setup/install-node.sh
 
 # Install Supabase CLI using the script
 RUN /app/container-setup/install-supabase.sh
 
 # Source nvm (Node Version Manager) and set up the Chatbot UI environment
-# Combining nvm sourcing and script execution in a single RUN command
 RUN /bin/bash -c "source /usr/local/share/nvm/nvm.sh && /app/container-setup/setup-chatbot-ui.sh"
 
-# Default command to run when the container starts (opens a bash shell)
+# # Install Nginx
+# RUN apt-get update && apt-get install -y nginx
+
+# # Configure Nginx to reverse proxy the application on port 3000 to port 80 and 3001 externally
+# RUN echo 'server {\n\
+#     listen 80;\n\
+#     location / {\n\
+#         proxy_pass http://localhost:3000;\n\
+#         proxy_set_header Host $host;\n\
+#         proxy_set_header X-Real-IP $remote_addr;\n\
+#         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n\
+#         proxy_set_header X-Forwarded-Proto $scheme;\n\
+#     }\n\
+# }\n\
+# server {\n\
+#     listen 3001;\n\
+#     location / {\n\
+#         proxy_pass http://localhost:3000;\n\
+#         proxy_set_header Host $host;\n\
+#         proxy_set_header X-Real-IP $remote_addr;\n\
+#         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n\
+#         proxy_set_header X-Forwarded-Proto $scheme;\n\
+#     }\n\
+# }' > /etc/nginx/sites-available/default
+
+# # Expose ports 80 and 3001 to the host
+# EXPOSE 80 3001
+
+EXPOSE 3000
+
+# Ensure Nginx starts with the container
+ENTRYPOINT ["/bin/bash", "-c", "/app/container-setup/start.sh"]
+
 CMD ["/bin/bash"]
