@@ -1,0 +1,8 @@
+{
+    "name": "chatbot-ui-codespace",
+    "build": {
+      "dockerfile": "../src/Dockerfile",
+      "context": "../src"
+    },
+    "forwardPorts": [3000]
+  }
