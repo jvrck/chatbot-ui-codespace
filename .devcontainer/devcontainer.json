@@ -1,8 +1,8 @@
 {
-    "name": "My Dev Container",
+    "name": "chatbot-ui-codespace",
     "build": {
-      "dockerfile": "../Dockerfile",
-      "context": ".."
+      "dockerfile": "../src/Dockerfile",
+      "context": "../src"
     },
     "forwardPorts": [3000]
   }
