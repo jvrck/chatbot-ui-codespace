@@ -14,15 +14,13 @@ COPY ./container-setup /app/container-setup
 # Ensure that all shell scripts in the container-setup directory have executable permissions
 RUN chmod +x /app/container-setup/*.sh
 
-# Install Node.js using the script (you could consider combining the chmod and execution commands into fewer layers)
+# Install Node.js using the script
 RUN /app/container-setup/install-node.sh
 
 # Install Supabase CLI using the script
 RUN /app/container-setup/install-supabase.sh
 
 # Source nvm (Node Version Manager) and set up the Chatbot UI environment
-# Combining nvm sourcing and script execution in a single RUN command
 RUN /bin/bash -c "source /usr/local/share/nvm/nvm.sh && /app/container-setup/setup-chatbot-ui.sh"
 
-# Default command to run when the container starts (opens a bash shell)
 CMD ["/bin/bash"]
